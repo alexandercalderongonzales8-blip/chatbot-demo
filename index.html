@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Chatbot Demo</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #ece5dd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.chat-container {
+  width: 350px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: #075e54;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+.chat-box {
+  height: 400px;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  padding: 8px 12px;
+  margin: 5px;
+  border-radius: 10px;
+  max-width: 70%;
+}
+
+.user {
+  background: #dcf8c6;
+  align-self: flex-end;
+}
+
+.bot {
+  background: #f1f0f0;
+  align-self: flex-start;
+}
+
+.input-area {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+}
+
+button {
+  background: #075e54;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-container">
+  <div class="header">Chatbot 🤖</div>
+
+  <div class="chat-box" id="chat"></div>
+
+  <div class="input-area">
+    <input type="text" id="input" placeholder="Escribe un mensaje...">
+    <button onclick="enviar()">Enviar</button>
+  </div>
+</div>
+
+<script>
+function agregarMensaje(texto, tipo) {
+  let chat = document.getElementById("chat");
+  let mensaje = document.createElement("div");
+
+  mensaje.classList.add("message", tipo);
+  mensaje.innerText = texto;
+
+  chat.appendChild(mensaje);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function responder(msg) {
+  msg = msg.toLowerCase();
+
+  if (msg.includes("hola")) {
+    return "Hola 👋 ¿En qué puedo ayudarte?\n1. Precios\n2. Ubicación";
+  } 
+  else if (msg.includes("1") || msg.includes("precio")) {
+    return "Nuestros precios empiezan desde 50 Bs 💰";
+  } 
+  else if (msg.includes("2") || msg.includes("ubicacion")) {
+    return "Estamos en La Paz 📍";
+  } 
+  else {
+    return "No entiendo 😅 escribe: hola, precio o ubicación";
+  }
+}
+
+function enviar() {
+  let input = document.getElementById("input");
+  let texto = input.value;
+
+  if (texto.trim() === "") return;
+
+  agregarMensaje(texto, "user");
+
+  setTimeout(() => {
+    let respuesta = responder(texto);
+    agregarMensaje(respuesta, "bot");
+  }, 500);
+
+  input.value = "";
+}
+</script>
+
+</body>
+</html>
