@@ -105,16 +105,25 @@ function responder(msg) {
   msg = msg.toLowerCase();
 
   if (msg.includes("hola")) {
-    return "Hola 👋 ¿En qué puedo ayudarte?\n1. Precios\n2. Ubicación";
+    return "💪 Bienvenido a Nexus Fit\n¿Qué deseas comprar?\n1. Creatina\n2. Proteína\n3. Pre-entreno";
   } 
-  else if (msg.includes("1") || msg.includes("precio")) {
-    return "Nuestros precios empiezan desde 50 Bs 💰";
+  else if (msg.includes("1") || msg.includes("creatina")) {
+    return "🔥 Creatina disponible\nPrecio: 120 Bs\n¿Deseas hacer el pedido? (si/no)";
   } 
-  else if (msg.includes("2") || msg.includes("ubicacion")) {
-    return "Estamos en La Paz 📍";
+  else if (msg.includes("2") || msg.includes("proteina")) {
+    return "🥤 Proteína disponible\nPrecio: 250 Bs\n¿Deseas hacer el pedido? (si/no)";
+  } 
+  else if (msg.includes("3") || msg.includes("pre")) {
+    return "⚡ Pre-entreno disponible\nPrecio: 150 Bs\n¿Deseas hacer el pedido? (si/no)";
+  } 
+  else if (msg.includes("si")) {
+    return "✅ Pedido realizado con éxito\nNos contactaremos contigo pronto 📲";
+  } 
+  else if (msg.includes("no")) {
+    return "👌 Está bien, escribe 'hola' para volver al menú";
   } 
   else {
-    return "No entiendo 😅 escribe: hola, precio o ubicación";
+    return "❌ No entendí\nEscribe: hola";
   }
 }
 
