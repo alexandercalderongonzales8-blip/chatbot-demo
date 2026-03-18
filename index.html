@@ -95,6 +95,14 @@ button {
 </div>
 
 <script>
+// VARIABLES GLOBALES
+let estado = "inicio";
+let producto = "";
+let nombreCliente = "";
+let direccionCliente = "";
+</script>
+
+<script>
 function agregarMensaje(texto, tipo) {
   let chat = document.getElementById("chat");
   let mensaje = document.createElement("div");
@@ -175,6 +183,7 @@ function enviar() {
   input.value = "";
 }
 </script>
+
 <script>
 function actualizarWhatsApp() {
   let numero = "59173983651"; // tu número real
