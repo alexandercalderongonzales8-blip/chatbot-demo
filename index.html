@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Chatbot Demo</title>
+<title>Chatbot Demo - Nexus Fit</title>
 
 <style>
 body {
@@ -73,6 +73,11 @@ button {
   padding: 10px;
   cursor: pointer;
 }
+
+button:disabled {
+  background: #888;
+  cursor: not-allowed;
+}
 </style>
 </head>
 
@@ -89,9 +94,7 @@ button {
   </div>
 
   <!-- BOTÓN DE WHATSAPP -->
-  <a id="whatsappBtn" target="_blank">
-    <button>Finalizar pedido por WhatsApp</button>
-  </a>
+  <button id="whatsappBtn" disabled>Finalizar pedido por WhatsApp</button>
 </div>
 
 <script>
@@ -100,16 +103,13 @@ let estado = "inicio";
 let producto = "";
 let nombreCliente = "";
 let direccionCliente = "";
-</script>
 
-<script>
+// FUNCIONES
 function agregarMensaje(texto, tipo) {
   let chat = document.getElementById("chat");
   let mensaje = document.createElement("div");
-
   mensaje.classList.add("message", tipo);
   mensaje.innerText = texto;
-
   chat.appendChild(mensaje);
   chat.scrollTop = chat.scrollHeight;
 }
@@ -159,13 +159,14 @@ function responder(msg) {
   }
 
   if (estado === "direccion") {
+    direccionCliente = msg;
     estado = "final";
-    return `✅ Pedido registrado\n👤 Nombre: ${nombreCliente}\n📦 Producto: ${producto}\n📍 Dirección: ${msg}`;
+    document.getElementById("whatsappBtn").disabled = false; // habilita el botón
+    return `✅ Pedido registrado\n👤 Nombre: ${nombreCliente}\n📦 Producto: ${producto}\n📍 Dirección: ${direccionCliente}\n\nPresiona el botón para finalizar en WhatsApp`;
   }
 
   return "❌ Escribe 'hola' para comenzar";
 }
-
 
 function enviar() {
   let input = document.getElementById("input");
@@ -182,12 +183,10 @@ function enviar() {
 
   input.value = "";
 }
-</script>
 
-<script>
-function actualizarWhatsApp() {
-  let numero = "59173983651"; // tu número real
-
+// BOTÓN WHATSAPP
+document.getElementById("whatsappBtn").addEventListener("click", function() {
+  let numero = "59173983651"; // tu número
   let mensaje = "Hola, quiero hacer un pedido%0A";
   mensaje += "Producto: " + producto + "%0A";
   mensaje += "Nombre: " + nombreCliente + "%0A";
@@ -195,8 +194,8 @@ function actualizarWhatsApp() {
 
   let link = "https://wa.me/" + numero + "?text=" + mensaje;
 
-  document.getElementById("whatsappBtn").href = link;
-}
+  window.open(link, "_blank");
+});
 </script>
 </body>
 </html>
