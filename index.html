@@ -87,6 +87,11 @@ button {
     <input type="text" id="input" placeholder="Escribe un mensaje...">
     <button onclick="enviar()">Enviar</button>
   </div>
+
+  <!-- BOTÓN DE WHATSAPP -->
+  <a id="whatsappBtn" target="_blank">
+    <button>Finalizar pedido por WhatsApp</button>
+  </a>
 </div>
 
 <script>
@@ -104,28 +109,55 @@ function agregarMensaje(texto, tipo) {
 function responder(msg) {
   msg = msg.toLowerCase();
 
-  if (msg.includes("hola")) {
-    return "💪 Bienvenido a Nexus Fit\n¿Qué deseas comprar?\n1. Creatina\n2. Proteína\n3. Pre-entreno";
-  } 
-  else if (msg.includes("1") || msg.includes("creatina")) {
-    return "🔥 Creatina disponible\nPrecio: 120 Bs\n¿Deseas hacer el pedido? (si/no)";
-  } 
-  else if (msg.includes("2") || msg.includes("proteina")) {
-    return "🥤 Proteína disponible\nPrecio: 250 Bs\n¿Deseas hacer el pedido? (si/no)";
-  } 
-  else if (msg.includes("3") || msg.includes("pre")) {
-    return "⚡ Pre-entreno disponible\nPrecio: 150 Bs\n¿Deseas hacer el pedido? (si/no)";
-  } 
-  else if (msg.includes("si")) {
-    return "✅ Pedido realizado con éxito\nNos contactaremos contigo pronto 📲";
-  } 
-  else if (msg.includes("no")) {
-    return "👌 Está bien, escribe 'hola' para volver al menú";
-  } 
-  else {
-    return "❌ No entendí\nEscribe: hola";
+  if (estado === "inicio") {
+    if (msg.includes("hola")) {
+      estado = "menu";
+      return "💪 Bienvenido a Nexus Fit\n¿Qué deseas comprar?\n1. Creatina\n2. Proteína\n3. Pre-entreno";
+    }
   }
+
+  if (estado === "menu") {
+    if (msg.includes("1") || msg.includes("creatina")) {
+      producto = "Creatina";
+      estado = "confirmar";
+      return "🔥 Creatina - 120 Bs\n¿Deseas hacer el pedido? (si/no)";
+    }
+    if (msg.includes("2") || msg.includes("proteina")) {
+      producto = "Proteína";
+      estado = "confirmar";
+      return "🥤 Proteína - 250 Bs\n¿Deseas hacer el pedido? (si/no)";
+    }
+    if (msg.includes("3") || msg.includes("pre")) {
+      producto = "Pre-entreno";
+      estado = "confirmar";
+      return "⚡ Pre-entreno - 150 Bs\n¿Deseas hacer el pedido? (si/no)";
+    }
+  }
+
+  if (estado === "confirmar") {
+    if (msg.includes("si")) {
+      estado = "nombre";
+      return "🧾 Perfecto, ¿cuál es tu nombre?";
+    } else {
+      estado = "inicio";
+      return "👌 Escribe 'hola' para volver al menú";
+    }
+  }
+
+  if (estado === "nombre") {
+    nombreCliente = msg;
+    estado = "direccion";
+    return "📍 Ingresa tu dirección de entrega";
+  }
+
+  if (estado === "direccion") {
+    estado = "final";
+    return `✅ Pedido registrado\n👤 Nombre: ${nombreCliente}\n📦 Producto: ${producto}\n📍 Dirección: ${msg}`;
+  }
+
+  return "❌ Escribe 'hola' para comenzar";
 }
+
 
 function enviar() {
   let input = document.getElementById("input");
@@ -143,6 +175,19 @@ function enviar() {
   input.value = "";
 }
 </script>
+<script>
+function actualizarWhatsApp() {
+  let numero = "59173983651"; // tu número real
 
+  let mensaje = "Hola, quiero hacer un pedido%0A";
+  mensaje += "Producto: " + producto + "%0A";
+  mensaje += "Nombre: " + nombreCliente + "%0A";
+  mensaje += "Dirección: " + direccionCliente;
+
+  let link = "https://wa.me/" + numero + "?text=" + mensaje;
+
+  document.getElementById("whatsappBtn").href = link;
+}
+</script>
 </body>
 </html>
